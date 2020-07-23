@@ -1,26 +1,24 @@
 <div class="container">
-  <div class="row mb-4">
+  <app-loading-indicator [loadingText]="'Loading Aircrafts...'" *ngIf="loadingAircrafts"></app-loading-indicator>
+  <div class="row mb-4" *ngIf="!loadingAircrafts">
     <div class="col-md-12">
-      <form action="" class="form-inline">
+      <form [formGroup]="addAircraftForm" (ngSubmit)="onAircraftToAddSubmit()" class="form-inline">
         <label for="">Aircraft:</label>
-        <select class="custom-select ml-1" id="inlineFormCustomSelectPref">
-          <option selected>Choose...</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select class="custom-select ml-1" formControlName="aircraftToAdd">
+          <option *ngFor="let aircraft of aircrafts" [ngValue]="aircraft">{{aircraft.name}}</option>
         </select>
-        <button class="btn btn-primary ml-2">Add Aircraft</button>
+        <button type="submit" class="btn btn-primary ml-2">Add Aircraft</button>
       </form>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="selectedAircraft.length > 0">
     <div class="col-md-4">
       <div class="card">
         <h5 class="card-header">A-10C</h5>
         <div class="card-body">
           <p class="card-text"><strong>Weight Points:</strong> 14</p>
           <p class="card-text"><strong>Ordnance Total:</strong> 2</p>
-          <form action="" class="form-inline mb-3">
+          <div  class="form-inline mb-3">
             <select class="custom-select ml-1 mr-1" id="inlineFormCustomSelectPref">
               <option selected>Choose...</option>
               <option value="1">One</option>
@@ -28,7 +26,7 @@
               <option value="3">Three</option>
             </select>
             <button class="btn btn-primary">Add Weapon</button>
-          </form>
+          </div>
           <ul class="list-group weapon-list">
             <li class="list-group-item">Cras justo odio <a class="text-danger" href="#"><strong>Remove</strong></a></li>
             <li class="list-group-item">Dapibus ac facilisis in <a class="text-danger" href="#"><strong>Remove</strong></a></li>
