@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Aircraft } from './aircraft';
 import { AircraftService } from './aircraft.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { SelectedAircraft } from './selected-aircraft';
 
 @Component({
   selector: 'app-ordnance-calc',
@@ -10,7 +11,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class OrdnanceCalcComponent implements OnInit {
   aircrafts: Aircraft[];
-  selectedAircraft: Aircraft[] = [];
+  selectedAircraft: SelectedAircraft[] = [];
   loadingAircrafts: boolean = false;
   addAircraftForm = new FormGroup({
     aircraftToAdd: new FormControl()
@@ -31,7 +32,14 @@ export class OrdnanceCalcComponent implements OnInit {
 
   onAircraftToAddSubmit(): void {
     console.log(this.addAircraftForm.value.aircraftToAdd);
-    this.selectedAircraft.push(this.addAircraftForm.value.aircraftToAdd);
+    let newAircraft: SelectedAircraft = {
+      name: '',
+      weightPoints: 0,
+      weapons: []
+    }
+    Object.assign(newAircraft, this.addAircraftForm.value.aircraftToAdd);
+    newAircraft.weapons = [];
+    this.selectedAircraft.push(newAircraft);
     
   }
 

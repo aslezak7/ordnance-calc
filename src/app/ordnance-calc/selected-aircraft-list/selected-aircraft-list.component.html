@@ -1,0 +1,23 @@
+<app-loading-indicator [loadingText]="'Loading Weapons...'" *ngIf="loadingWeapons"></app-loading-indicator>
+<div class="row" *ngIf="!loadingWeapons">
+  <div class="col-md-4 mb-2" *ngFor="let aircraft of selectedAircraft; let index = index;">
+    <div class="card">
+      <h5 class="card-header">{{aircraft.name}}</h5>
+      {{selectedAircraft | json}}
+      {{selectedWeapons | json}}
+      <div class="card-body">
+        <p class="card-text"><strong>Weight Points:</strong> {{aircraft.weightPoints}}</p>
+        <p class="card-text"><strong>Ordnance Total:</strong> 0</p>
+        <form [formGroup]="addWeaponForm" (ngSubmit)="onWeaponToAddSubmit(index)" class="form-inline mb-3">
+          <select class="custom-select ml-1 mr-1" formControlName="weaponToAdd" [name]="'weapon' + index">
+            <option *ngFor="let weapon of weapons" [ngValue]="weapon">{{weapon.name}}</option>
+          </select>
+          <button type="submit" class="btn btn-primary">Add Weapon</button>
+        </form>
+        <ul class="list-group weapon-list">
+          <li *ngFor="let weapon of selectedAircraft[index].weapons" class="list-group-item">{{weapon.name}} <a class="text-danger" href="#"><strong>Remove</strong></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

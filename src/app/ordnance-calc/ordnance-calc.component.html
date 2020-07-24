@@ -11,31 +11,5 @@
       </form>
     </div>
   </div>
-  <div class="row" *ngIf="selectedAircraft.length > 0">
-    <div class="col-md-4">
-      <div class="card">
-        <h5 class="card-header">A-10C</h5>
-        <div class="card-body">
-          <p class="card-text"><strong>Weight Points:</strong> 14</p>
-          <p class="card-text"><strong>Ordnance Total:</strong> 2</p>
-          <div  class="form-inline mb-3">
-            <select class="custom-select ml-1 mr-1" id="inlineFormCustomSelectPref">
-              <option selected>Choose...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-            <button class="btn btn-primary">Add Weapon</button>
-          </div>
-          <ul class="list-group weapon-list">
-            <li class="list-group-item">Cras justo odio <a class="text-danger" href="#"><strong>Remove</strong></a></li>
-            <li class="list-group-item">Dapibus ac facilisis in <a class="text-danger" href="#"><strong>Remove</strong></a></li>
-            <li class="list-group-item">Morbi leo risus <a class="text-danger" href="#"><strong>Remove</strong></a></li>
-            <li class="list-group-item">Porta ac consectetur ac <a class="text-danger" href="#"><strong>Remove</strong></a></li>
-            <li class="list-group-item">Vestibulum at eros <a class="text-danger" href="#"><strong>Remove</strong></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-selected-aircraft-list *ngIf="!loadingAircrafts" [selectedAircraft]="selectedAircraft"></app-selected-aircraft-list>
 </div>
