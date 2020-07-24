@@ -2,12 +2,13 @@
   <h5 class="card-header">{{aircraft.name}}</h5>
   <div class="card-body">
     <p class="card-text"><strong>Weight Points:</strong> {{aircraft.weightPoints}}</p>
-    <p class="card-text"><strong>Ordnance Total:</strong> 0</p>
+    <p class="card-text"><strong>Ordnance Total:</strong> {{ordnanceTotal}}</p>
+    <p class="card-text"><strong>Special Ops Points:</strong> {{specialOpsPoints}}</p>
     <form [formGroup]="addWeaponForm" (ngSubmit)="onWeaponToAddSubmit()" class="form-inline mb-3">
       <select class="custom-select ml-1 mr-1" formControlName="weaponToAdd">
         <option *ngFor="let weapon of weapons" [ngValue]="weapon">{{weapon.name}}</option>
       </select>
-      <button type="submit" class="btn btn-primary">Add Weapon</button>
+      <button type="submit" [disabled]="addWeaponDisabled" class="btn btn-primary">Add Weapon</button>
     </form>
     <ul class="list-group weapon-list">
       <li *ngFor="let weapon of selectedWeapons" class="list-group-item">{{weapon.name}} <a class="text-danger" href="#"><strong>Remove</strong></a></li>

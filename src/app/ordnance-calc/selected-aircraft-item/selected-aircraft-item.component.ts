@@ -13,10 +13,13 @@ export class SelectedAircraftItemComponent implements OnInit {
   @Input() aircraft: Aircraft;
   weapons: Weapon[];
   selectedWeapons: Weapon[];
+  ordnanceTotal: number = 0;
+  specialOpsPoints: number = 1;
   loadingWeapons: boolean = false;
   addWeaponForm = new FormGroup({
     weaponToAdd: new FormControl()
   });
+  addWeaponDisabled: boolean = false;
   constructor(private weaponService: WeaponService) { }
 
   ngOnInit() {
@@ -34,6 +37,12 @@ export class SelectedAircraftItemComponent implements OnInit {
   onWeaponToAddSubmit(selectedAircraftIndex: number): void {
     const weapon = this.addWeaponForm.value.weaponToAdd;
     this.selectedWeapons.push(weapon);
+    this.aircraft.weightPoints = this.aircraft.weightPoints - weapon.weightPointCost;
+    this.ordnanceTotal = this.ordnanceTotal + weapon.ordnancePointCost;
+    this.specialOpsPoints = Math.floor(this.ordnanceTotal / 10) + 1;
+    if(this.aircraft.weightPoints <= 0) {
+      this.addWeaponDisabled = true;
+    }
   }
 
 }
