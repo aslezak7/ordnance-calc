@@ -1,8 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Aircraft } from '../aircraft';
-import { WeaponService } from '../weapon.service';
-import { Weapon } from '../weapon';
-import { FormGroup, FormControl } from '@angular/forms';
 import { SelectedAircraft } from '../selected-aircraft';
 
 @Component({
@@ -12,31 +8,9 @@ import { SelectedAircraft } from '../selected-aircraft';
 })
 export class SelectedAircraftListComponent implements OnInit {
   @Input() selectedAircraft: SelectedAircraft[];
-  weapons: Weapon[];
-  selectedWeapons: Weapon[];
-  loadingWeapons: boolean = false;
-  addWeaponForm = new FormGroup({
-    weaponToAdd: new FormControl()
-  });
-  constructor(private weaponService: WeaponService) { }
-
+  constructor() { }
   ngOnInit() {
-    this.loadingWeapons = true;
-    this.selectedWeapons = [];
-    this.weaponService.getWeapons().subscribe(weapons => {
-      this.weapons = weapons;
-      this.loadingWeapons = false;
-      this.addWeaponForm.setValue({
-        weaponToAdd: this.weapons[0]
-      });
-    });
 
-  }
-
-  onWeaponToAddSubmit(selectedAircraftIndex: number): void {
-    console.log(this.addWeaponForm.value.weaponToAdd);
-    this.selectedWeapons.push(this.addWeaponForm.value.weaponToAdd);
-    console.log(this.selectedAircraft[selectedAircraftIndex].weapons);
   }
 
 }
