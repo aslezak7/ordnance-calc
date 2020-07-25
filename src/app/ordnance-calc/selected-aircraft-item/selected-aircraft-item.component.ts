@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Aircraft } from '../aircraft';
-import { Weapon } from '../weapon';
-import { FormGroup, FormControl } from '@angular/forms';
-import { WeaponService } from '../weapon.service';
+import { Component, OnInit, Input } from "@angular/core";
+import { Aircraft } from "../aircraft";
+import { Weapon } from "../weapon";
+import { FormGroup, FormControl } from "@angular/forms";
+import { WeaponService } from "../weapon.service";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 @Component({
-  selector: 'app-selected-aircraft-item',
-  templateUrl: './selected-aircraft-item.component.html',
-  styleUrls: ['./selected-aircraft-item.component.scss']
+  selector: "app-selected-aircraft-item",
+  templateUrl: "./selected-aircraft-item.component.html",
+  styleUrls: ["./selected-aircraft-item.component.scss"],
 })
 export class SelectedAircraftItemComponent implements OnInit {
   @Input() aircraft: Aircraft;
@@ -17,19 +18,19 @@ export class SelectedAircraftItemComponent implements OnInit {
   specialOpsPoints: number = 1;
   loadingWeapons: boolean = false;
   addWeaponForm = new FormGroup({
-    weaponToAdd: new FormControl()
+    weaponToAdd: new FormControl(),
   });
   addWeaponDisabled: boolean = false;
-  constructor(private weaponService: WeaponService) { }
+  constructor(private weaponService: WeaponService) {}
 
   ngOnInit() {
     this.loadingWeapons = true;
     this.selectedWeapons = [];
-    this.weaponService.getWeapons().subscribe(weapons => {
+    this.weaponService.getWeapons().subscribe((weapons) => {
       this.weapons = weapons;
       this.loadingWeapons = false;
       this.addWeaponForm.setValue({
-        weaponToAdd: this.weapons[0]
+        weaponToAdd: this.weapons[0],
       });
     });
   }
@@ -37,12 +38,34 @@ export class SelectedAircraftItemComponent implements OnInit {
   onWeaponToAddSubmit(selectedAircraftIndex: number): void {
     const weapon = this.addWeaponForm.value.weaponToAdd;
     this.selectedWeapons.push(weapon);
-    this.aircraft.weightPoints = this.aircraft.weightPoints - weapon.weightPointCost;
+    this.aircraft.weightPoints =
+      this.aircraft.weightPoints - weapon.weightPointCost;
     this.ordnanceTotal = this.ordnanceTotal + weapon.ordnancePointCost;
-    this.specialOpsPoints = Math.floor(this.ordnanceTotal / 10) + 1;
-    if(this.aircraft.weightPoints <= 0) {
+    this.calculateSpecOpsPoints();
+    if (this.aircraft.weightPoints <= 0) {
       this.addWeaponDisabled = true;
     }
   }
 
+  removeWeapon(weaponName: string): void {
+    //Get index of weapon that matches name passed.
+    let searchResult = this.selectedWeapons.findIndex((weapon) => {
+      return weapon.name == weaponName;
+    });
+    //if found recalculate the weight points and then remove it from the selected weapons array
+    if (searchResult != -1) {
+      this.aircraft.weightPoints += this.selectedWeapons[
+        searchResult
+      ].weightPointCost;
+      this.ordnanceTotal -= this.selectedWeapons[
+        searchResult
+      ].ordnancePointCost;
+      this.calculateSpecOpsPoints();
+      this.selectedWeapons.splice(searchResult, 1);
+    }
+  }
+
+  calculateSpecOpsPoints(): void {
+    this.specialOpsPoints = Math.floor(this.ordnanceTotal / 10) + 1;
+  }
 }
