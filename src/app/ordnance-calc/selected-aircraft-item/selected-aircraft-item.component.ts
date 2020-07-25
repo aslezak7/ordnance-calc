@@ -32,6 +32,7 @@ export class SelectedAircraftItemComponent implements OnInit {
       this.addWeaponForm.setValue({
         weaponToAdd: this.weapons[0],
       });
+      this.calculateAvailableWeapons();
     });
   }
 
@@ -42,9 +43,7 @@ export class SelectedAircraftItemComponent implements OnInit {
       this.aircraft.weightPoints - weapon.weightPointCost;
     this.ordnanceTotal = this.ordnanceTotal + weapon.ordnancePointCost;
     this.calculateSpecOpsPoints();
-    if (this.aircraft.weightPoints <= 0) {
-      this.addWeaponDisabled = true;
-    }
+    this.calculateAvailableWeapons();
   }
 
   removeWeapon(weaponName: string): void {
@@ -62,10 +61,27 @@ export class SelectedAircraftItemComponent implements OnInit {
       ].ordnancePointCost;
       this.calculateSpecOpsPoints();
       this.selectedWeapons.splice(searchResult, 1);
+      this.calculateAvailableWeapons();
     }
   }
 
   calculateSpecOpsPoints(): void {
     this.specialOpsPoints = Math.floor(this.ordnanceTotal / 10) + 1;
+  }
+
+  calculateAvailableWeapons(): void {
+    for (const weapon of this.weapons) {
+      if (this.aircraft.weightPoints - weapon.weightPointCost < 0) {
+        weapon.disabled = true;
+      } else {
+        weapon.disabled = false;
+      }
+
+      if (this.aircraft.weightPoints === 0) {
+        this.addWeaponDisabled = true;
+      } else {
+        this.addWeaponDisabled = false;
+      }
+    }
   }
 }

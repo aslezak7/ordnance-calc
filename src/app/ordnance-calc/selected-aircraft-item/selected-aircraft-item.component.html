@@ -21,9 +21,12 @@
       class="form-inline mb-3"
     >
       <select class="custom-select ml-1 mr-1" formControlName="weaponToAdd">
-        <option *ngFor="let weapon of weapons" [ngValue]="weapon">{{
-          weapon.name
-        }}</option>
+        <option
+          *ngFor="let weapon of weapons"
+          [ngValue]="weapon"
+          [disabled]="weapon.disabled"
+          >{{ weapon.name }}</option
+        >
       </select>
       <button
         type="submit"
