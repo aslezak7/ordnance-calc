@@ -36,7 +36,9 @@
     <ul class="list-group weapon-list">
       <li *ngFor="let weapon of selectedWeapons" class="list-group-item">
         {{ weapon.name }}
-        <a class="text-danger" href="#"><strong>Remove</strong></a>
+        <a class="text-danger" href="#"
+          ><strong><i class="fa fa-trash" aria-hidden="true"></i></strong
+        ></a>
       </li>
     </ul>
   </div>
