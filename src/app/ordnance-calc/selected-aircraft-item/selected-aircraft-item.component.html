@@ -36,7 +36,7 @@
         Add Weapon
       </button>
     </form>
-    <ul class="list-group weapon-list">
+    <ul *ngIf="selectedWeapons.length > 0" class="list-group weapon-list">
       <li *ngFor="let weapon of selectedWeapons" class="list-group-item">
         {{ weapon.name }}
         <a class="text-danger" (click)="removeWeapon(weapon.name)"
